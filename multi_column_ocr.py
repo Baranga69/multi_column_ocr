@@ -24,10 +24,10 @@ ap.add_argument("-s", "--min-size", type=int, default=2,
 args = vars(ap.parse_args())
 
 # set a seed for our random number generator
-np.random.seed(42)
+np.random.seed(30)
 
 # load the input image and convert it to grayscale
-image = cv2.imread(args["image"])
+image = cv2.imread("michael_jordan_stats.jpg")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 # Initializing a rectangular kernel that is ~5x wider than it is tall,
@@ -59,7 +59,7 @@ cv2.imshow("Thresh", thresh)
 
 # find contours in the threshold image and grab the largest one,
 # which we will assume is the stats table
-cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+cnts = cv2.findContours(thresh.copy(), cv2.RETR_TREE,
     cv2.CHAIN_APPROX_SIMPLE)
 cnts = imutils.grab_contours(cnts)
 tableCnt = max(cnts, key=cv2.contourArea)
@@ -68,6 +68,10 @@ tableCnt = max(cnts, key=cv2.contourArea)
 # the table from the input image 
 (x, y, w, h) = cv2.boundingRect(tableCnt)
 table = image[y:y + h, x:x + w]
+# for cnt in cnts:
+#     x, y, w, h = cv2.boundingRect(cnt)
+#     if y < 100:
+#         table = cv2.rectangle(image, (x,y), (x + w, y + h), (0,0,255), 1)
 
 # show the original input image and extracted table to our screen
 cv2.imshow("Input", image)
@@ -93,7 +97,7 @@ for i  in range(0, len(results["text"])):
     w = results["width"] [i]
     h = results["height"] [i]
 
-    # extract the OCR text itself along with the confidence of the text localozation
+    # extract the OCR text itself along with the confidence of the text localization
     text = results["text"] [i]
     conf = int(float(results["conf"] [i]))
 
