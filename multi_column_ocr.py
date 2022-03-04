@@ -68,6 +68,7 @@ tableCnt = max(cnts, key=cv2.contourArea)
 # the table from the input image 
 (x, y, w, h) = cv2.boundingRect(tableCnt)
 table = image[y:y + h, x:x + w]
+# This is code I was borrowing from Nano Nets to see whether I can improve my own model and how it functions
 # for cnt in cnts:
 #     x, y, w, h = cv2.boundingRect(cnt)
 #     if y < 100:
